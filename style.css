@@ -717,3 +717,53 @@ body {
     height: 100%;
     object-fit: cover;
 }
+
+/* =========================================
+   Mobil Uygulama Alt Menüsü (Bottom Nav)
+========================================= */
+.mobile-bottom-nav {
+    display: none; /* Bilgisayarda gizli */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0a0a0a;
+    border-top: 1px solid #262626;
+    z-index: 1000;
+    padding-bottom: env(safe-area-inset-bottom); /* iPhone çentiği uyumu */
+}
+
+.mobile-bottom-nav .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 500;
+    gap: 6px;
+    transition: color 0.2s;
+}
+
+.mobile-bottom-nav .nav-item i {
+    font-size: 20px;
+}
+
+.mobile-bottom-nav .nav-item.active,
+.mobile-bottom-nav .nav-item:hover {
+    color: #ffffff;
+}
+
+/* Telefon Ekranlarına Özel Kurallar */
+@media (max-width: 768px) {
+    .mobile-bottom-nav {
+        display: flex; /* Telefondan girilince menüyü göster */
+    }
+    
+    body {
+        padding-bottom: 65px; /* Menü, alttaki videoların üstüne binmesin diye boşluk */
+    }
+}

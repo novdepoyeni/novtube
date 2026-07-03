@@ -19,12 +19,41 @@
     <main class="watch-container">
         
         <section class="watch-main">
-            <div class="player-wrapper">
-                <video id="main-video" controls autoplay poster="">
-                    <source src="" type="video/mp4">
-                    Tarayıcınız video etiketini desteklemiyor.
-                </video>
+<div class="player-wrapper" id="custom-player">
+    <video id="main-video" playsinline></video>
+    
+    <div class="skip-effect" id="skip-effect">
+        <i class="fas fa-forward"></i>
+        <span>10s</span>
+    </div>
+
+    <div class="player-controls">
+        <div class="progress-area">
+            <div class="progress-bar"><div class="progress-filled"></div></div>
+        </div>
+        
+        <div class="controls-main">
+            <div class="controls-left">
+                <button class="player-btn" id="play-pause-btn"><i class="fas fa-play"></i></button>
+                <span class="time-display" id="time-display">0:00 / 0:00</span>
             </div>
+            
+            <div class="controls-right">
+                <div class="quality-selector">
+                    <button class="player-btn quality-btn" id="current-quality">1080p</button>
+                    <div class="quality-dropdown">
+                        <div class="q-option active" data-q="1080p">1080p (HD)</div>
+                        <div class="q-option" data-q="720p">720p</div>
+                        <div class="q-option" data-q="480p">480p</div>
+                        <div class="q-option" data-q="360p">360p</div>
+                        <div class="q-option" data-q="240p">240p</div>
+                    </div>
+                </div>
+                <button class="player-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
 
             <div class="video-details-section">
                 <h1 id="watch-title" class="watch-video-title">Video Yükleniyor...</h1>

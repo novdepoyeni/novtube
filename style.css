@@ -684,3 +684,36 @@ body {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
 }
+
+/* Ana Sayfa Video Kartları ve Çerçeve Tasarımı */
+.video-card {
+    background-color: #0d0d0d; /* Tam siyahtan bir tık açık, arka plandan ayrışması için */
+    border: 1px solid #262626; /* Kartın dış çerçevesi */
+    border-radius: 16px;
+    padding: 12px; /* Çerçeve ile video arasındaki boşluk */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.video-card:hover {
+    transform: translateY(-5px); /* Hafifçe yukarı kalkar */
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05); /* Siyah-beyaz temaya uygun soft beyaz parlama */
+    border-color: #555; /* Üzerine gelince çerçeve belirginleşir */
+}
+
+/* Videonun kart içindeki alanı */
+.preview-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border-radius: 8px; /* İç çerçevenin ovalliği */
+    overflow: hidden;
+    border: 1px solid #1a1a1a;
+}
+
+.preview-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

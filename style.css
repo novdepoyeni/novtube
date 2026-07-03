@@ -638,10 +638,10 @@ body {
 .player-btn:hover { opacity: 1; }
 .time-display { color: #fff; font-size: 13px; font-weight: 500; }
 
-/* Kalite Seçici */
-.quality-selector { position: relative; }
-.quality-btn { font-size: 14px; font-weight: bold; }
-.quality-dropdown {
+/* Hız Seçici */
+.speed-selector { position: relative; }
+.speed-btn { font-size: 14px; font-weight: bold; }
+.speed-dropdown {
     position: absolute;
     bottom: 40px; right: 0;
     background: rgba(15,15,15,0.95);
@@ -653,7 +653,7 @@ body {
     min-width: 120px;
     backdrop-filter: blur(10px);
 }
-.quality-selector:hover .quality-dropdown { display: flex; }
+.speed-selector:hover .speed-dropdown { display: flex; }
 .q-option {
     padding: 8px 15px;
     color: #fff;

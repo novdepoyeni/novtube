@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovTube | Video İzle</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-left">
+            <i class="fas fa-bars menu-icon"></i>
+            <a href="index.html" class="logo">Nov<span>Tube</span></a>
+        </div>
+        <div class="nav-center">
+            <div class="search-box">
+                <input type="text" placeholder="Videolarda ara...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <div class="nav-right">
+            <i class="fas fa-video"></i>
+            <i class="fas fa-bell"></i>
+            <div class="user-profile">NOV</div>
+        </div>
+    </header>
+
+    <main class="watch-container">
+        
+        <section class="watch-main">
+            <div class="player-wrapper">
+                <video id="main-video" controls autoplay poster="">
+                    <source src="" type="video/mp4">
+                    Tarayıcınız video etiketini desteklemiyor.
+                </video>
+            </div>
+
+            <div class="video-details-section">
+                <h1 id="watch-title" class="watch-video-title">Video Yükleniyor...</h1>
+                
+                <div class="channel-and-actions">
+                    <div class="channel-info">
+                        <div class="channel-avatar">NOV</div>
+                        <div class="channel-name-wrapper">
+                            <span class="channel-name">NOV</span>
+                            <span class="subs-count">Prodüksiyon & Medya</span>
+                        </div>
+                    </div>
+                    <div class="video-actions">
+                        <button class="action-btn"><i class="far fa-thumbs-up"></i> <span id="watch-views">0</span></button>
+                        <button class="action-btn"><i class="fas fa-share"></i> Paylaş</button>
+                    </div>
+                </div>
+
+                <div class="video-description-box">
+                    <p class="upload-date" id="watch-date">Yükleme tarihi hesaplanıyor...</p>
+                    <p class="description-text">
+                        NOV bünyesinde hazırlanan bu çalışmada sinematik detaylar, modern kurgu teknikleri ve yüksek çözünürlüklü video prodüksiyon standartları ön planda tutulmuştur. Tüm hakları NOV firmasına aittir.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <aside class="watch-sidebar" id="suggested-videos">
+            </aside>
+
+    </main>
+
+    <script src="video-script.js"></script>
+</body>
+</html>

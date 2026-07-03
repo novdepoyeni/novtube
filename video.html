@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovTube | Video İzle</title>
+    <title>Video Yükleniyor... | NovTube</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -11,21 +11,10 @@
 
     <header class="navbar">
         <div class="nav-left">
-            <i class="fas fa-bars menu-icon"></i>
+            <i class="fas fa-bars menu-icon" id="menu-toggle"></i>
             <a href="index.html" class="logo">Nov<span>Tube</span></a>
         </div>
-        <div class="nav-center">
-            <div class="search-box">
-                <input type="text" placeholder="Videolarda ara...">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-        </div>
-        <div class="nav-right">
-            <i class="fas fa-video"></i>
-            <i class="fas fa-bell"></i>
-            <div class="user-profile">NOV</div>
-        </div>
-    </header>
+        </header>
 
     <main class="watch-container">
         
@@ -39,32 +28,38 @@
 
             <div class="video-details-section">
                 <h1 id="watch-title" class="watch-video-title">Video Yükleniyor...</h1>
-                
-                <div class="channel-and-actions">
-                    <div class="channel-info">
-                        <div class="channel-avatar">NOV</div>
-                        <div class="channel-name-wrapper">
-                            <span class="channel-name">NOV</span>
-                            <span class="subs-count">Prodüksiyon & Medya</span>
-                        </div>
-                    </div>
-                    <div class="video-actions">
-                        <button class="action-btn"><i class="far fa-thumbs-up"></i> <span id="watch-views">0</span></button>
-                        <button class="action-btn"><i class="fas fa-share"></i> Paylaş</button>
-                    </div>
-                </div>
-
+                <p class="upload-date" id="watch-date"></p>
                 <div class="video-description-box">
-                    <p class="upload-date" id="watch-date">Yükleme tarihi hesaplanıyor...</p>
-                    <p class="description-text">
-                        NOV bünyesinde hazırlanan bu çalışmada sinematik detaylar, modern kurgu teknikleri ve yüksek çözünürlüklü video prodüksiyon standartları ön planda tutulmuştur. Tüm hakları NOV firmasına aittir.
+                    <p class="description-text" id="watch-description">
+                        Bu proje NOV tarafından profesyonel olarak hazırlanmış ve yayına alınmıştır.
                     </p>
                 </div>
             </div>
         </section>
 
-        <aside class="watch-sidebar" id="suggested-videos">
-            </aside>
+        <aside class="watch-sidebar">
+            
+            <div class="customer-card" id="customer-card">
+                <div class="customer-header">
+                    <div class="customer-logo" id="customer-initial">C</div>
+                    <div class="customer-title-wrap">
+                        <h3 id="customer-name">Müşteri Adı</h3>
+                        <span class="customer-badge">Kurumsal Referans</span>
+                    </div>
+                </div>
+                <div class="customer-body">
+                    <p><i class="fas fa-map-marker-alt"></i> <span id="customer-address">Adres Bilgisi</span></p>
+                    <p><i class="fas fa-phone-alt"></i> <span id="customer-phone">Telefon Bilgisi</span></p>
+                    <div class="provided-services" id="customer-services">
+                        </div>
+                </div>
+            </div>
+
+            <div id="suggested-videos">
+                <h4 class="sidebar-heading">Diğer Çalışmalar</h4>
+                </div>
+
+        </aside>
 
     </main>
 

@@ -1,103 +1,136 @@
-// Adım 5: NovTube İzleme Sayfası Dinamikleri (video-script.js)
-
-// Veri bütünlüğü için ana sayfadaki video listesinin aynısını burada da tanımlıyoruz
+// Adım 5.1: Gelişmiş Müşteri Veritabanı ve Dinamik SEO
 const videosData = [
     {
         id: 1,
-        title: "NOV - Kurumsal Marka Tanıtımı",
-        thumbnail: "images/thumb1.jpg",
-        videoSrc: "videos/video1.mp4",
-        duration: "01:45",
-        views: "1.2 B Görüntülenme",
-        date: "2 gün önce"
+        title: "Görele Pide - Özel Tanıtım Filmi ve Dijital Menü",
+        thumbnail: "images/gorele-thumb.jpg",
+        videoSrc: "videos/gorele.mp4",
+        date: "2026-06-15",
+        description: "Görele Pide için hazırlanan yüksek çözünürlüklü mekan tanıtım filmi.",
+        customer: {
+            name: "Görele Pide",
+            address: "Darıca, Kocaeli",
+            phone: "+90 555 000 0000",
+            services: ["Video Prodüksiyon", "Dijital QR Menü", "SEO Optimizasyonu"]
+        }
     },
     {
         id: 2,
-        title: "Minimalist Animasyon Projesi",
-        thumbnail: "images/thumb2.jpg",
-        videoSrc: "videos/video2.mp4",
-        duration: "00:30",
-        views: "850 Görüntülenme",
-        date: "1 hafta önce"
-    },
-    {
-        id: 3,
-        title: "Ürün Lansman Reklamı",
-        thumbnail: "images/thumb3.jpg",
-        videoSrc: "videos/video3.mp4",
-        duration: "02:15",
-        views: "3.4 B Görüntülenme",
-        date: "1 ay önce"
-    },
-    {
-        id: 4,
-        title: "Sinematik İntro Çalışması",
-        thumbnail: "images/thumb4.jpg",
-        videoSrc: "videos/video4.mp4",
-        duration: "00:15",
-        views: "5.1 B Görüntülenme",
-        date: "2 ay önce"
+        title: "Hero's Pizza - Satış Odaklı Reklam Filmi",
+        thumbnail: "images/heros-thumb.jpg",
+        videoSrc: "videos/heros.mp4",
+        date: "2026-06-20",
+        description: "Hero's Pizza şubeleri için hazırlanan, modern kurgu teknikleri içeren dinamik reklam filmi.",
+        customer: {
+            name: "Hero's Pizza",
+            address: "Darıca, Kocaeli",
+            phone: "+90 555 111 1111",
+            services: ["Reklam Filmi", "Web Tasarım", "SEO"]
+        }
     }
 ];
 
-// 1. URL'den gelen 'id' parametresini yakalama
 const urlParams = new URLSearchParams(window.location.search);
 const videoId = parseInt(urlParams.get('id'));
-
-// 2. DOM Elemanlarını Seçme
-const mainVideo = document.getElementById('main-video');
-const watchTitle = document.getElementById('watch-title');
-const watchViews = document.getElementById('watch-views');
-const watchDate = document.getElementById('watch-date');
-const suggestedVideosContainer = document.getElementById('suggested-videos');
-
-// 3. URL'den gelen ID'ye ait videoyu bulma (Eğer ID yoksa veya geçersizse ilk videoyu aç)
 const currentVideo = videosData.find(v => v.id === videoId) || videosData[0];
 
-// 4. Sayfa İçeriğini Seçilen Videoya Göre Güncelleme
-if (currentVideo) {
-    mainVideo.src = currentVideo.videoSrc; // 'videos/' klasöründeki gerçek mp4 yolunu basar
-    watchTitle.textContent = currentVideo.title;
-    watchViews.textContent = ` ${currentVideo.views}`;
-    watchDate.textContent = `${currentVideo.date} tarihinde yüklendi`;
+// 1. Arayüzü Doldurma Fonksiyonu
+function updateUI() {
+    if (!currentVideo) return;
+
+    // Video Bilgileri
+    document.getElementById('main-video').src = currentVideo.videoSrc;
+    document.getElementById('watch-title').textContent = currentVideo.title;
+    document.getElementById('watch-date').textContent = `${currentVideo.date} tarihinde eklendi`;
+    document.getElementById('watch-description').textContent = currentVideo.description;
     
-    // SEO ve Tarayıcı Sekme Başlığı Güncellemesi
-    document.title = `${currentVideo.title} | NovTube`;
+    // Müşteri Künyesi (Kanal) Bilgileri
+    document.getElementById('customer-name').textContent = currentVideo.customer.name;
+    document.getElementById('customer-initial').textContent = currentVideo.customer.name.charAt(0);
+    document.getElementById('customer-address').textContent = currentVideo.customer.address;
+    document.getElementById('customer-phone').textContent = currentVideo.customer.phone;
+
+    // Sağlanan Hizmetleri Etiket Olarak Basma
+    const servicesContainer = document.getElementById('customer-services');
+    servicesContainer.innerHTML = '';
+    currentVideo.customer.services.forEach(service => {
+        const span = document.createElement('span');
+        span.classList.add('service-tag');
+        span.textContent = service;
+        servicesContainer.appendChild(span);
+    });
+
+    // Sayfa Sekme Başlığını SEO Uyumlu Yapma
+    document.title = `${currentVideo.title} | NovTube Referanslar`;
 }
 
-// 5. Sağ Sütuna Diğer Videoları (Önerilenler) Listeleme Fonksiyonu
-function loadSuggestedVideos() {
-    if (!suggestedVideosContainer) return;
+// 2. Google Botları İçin Dinamik SEO (Schema Markup) Enjeksiyonu
+// Bu kod ekranda görünmez, sadece arama motorları okur ve siteni indeksler.
+function injectSEO() {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    
+    // VideoObject Şeması
+    const schemaData = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": currentVideo.title,
+        "description": currentVideo.description,
+        "thumbnailUrl": `https://novtube.com/${currentVideo.thumbnail}`,
+        "uploadDate": currentVideo.date,
+        "contentUrl": `https://novtube.com/${currentVideo.videoSrc}`,
+        "publisher": {
+            "@type": "Organization",
+            "name": "NOV",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://novtube.com/logo.png"
+            }
+        },
+        "author": {
+            "@type": "LocalBusiness",
+            "name": currentVideo.customer.name,
+            "address": currentVideo.customer.address,
+            "telephone": currentVideo.customer.phone
+        }
+    };
 
-    suggestedVideosContainer.innerHTML = ''; // Temizle
+    script.text = JSON.stringify(schemaData);
+    document.head.appendChild(script);
+}
 
-    // Şu an izlenen videoyu listeden hariç tut (Kullanıcı zaten onu izliyor)
-    const suggestedVideos = videosData.filter(v => v.id !== currentVideo.id);
+// 3. Sağ Sütun Diğer Videolar
+function loadSuggested() {
+    const container = document.getElementById('suggested-videos');
+    const others = videosData.filter(v => v.id !== currentVideo.id);
 
-    suggestedVideos.forEach(video => {
-        const card = document.createElement('div');
-        card.classList.add('suggested-card');
-        
-        // Önerilen videoya tıklanınca sayfayı o video ID'si ile yenile
-        card.onclick = () => {
-            window.location.href = `video.html?id=${video.id}`;
-        };
-
-        card.innerHTML = `
+    others.forEach(video => {
+        const div = document.createElement('div');
+        div.classList.add('suggested-card');
+        div.onclick = () => window.location.href = `video.html?id=${video.id}`;
+        div.innerHTML = `
             <div class="suggested-thumbnail">
-                <div style="background: #1a1a1a; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border: 1px solid #333; border-radius: 8px;">
-                    ${video.title.substring(0, 12)}...
+                <div style="background: #1a1a1a; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
+                    NOV
                 </div>
             </div>
             <div class="suggested-info">
                 <h4 class="suggested-title">${video.title}</h4>
-                <span class="suggested-channel">NOV</span>
-                <span class="suggested-views">${video.views}</span>
+                <span class="suggested-channel">${video.customer.name}</span>
             </div>
         `;
-        suggestedVideosContainer.appendChild(card);
+        container.appendChild(div);
     });
 }
 
-// Sayfa yüklendiğinde önerilen videoları getir
-document.addEventListener('DOMContentLoaded', loadSuggestedVideos);
+// Tüm fonksiyonları sayfa yüklendiğinde tetikle
+document.addEventListener('DOMContentLoaded', () => {
+    updateUI();
+    injectSEO();
+    loadSuggested();
+});
+
+// Sol Menü Tıklama İşlevi (Temizlenmiş Haliyle)
+document.getElementById('menu-toggle')?.addEventListener('click', () => {
+    document.querySelector('.sidebar')?.classList.toggle('active');
+});

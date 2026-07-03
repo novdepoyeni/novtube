@@ -1,32 +1,15 @@
-// Adım 5.1: Gelişmiş Müşteri Veritabanı ve Dinamik SEO
+// Adım 5.2: Özel Oynatıcı İşlevleri (video-script.js)
+
+// Veritabanımız (BaseSrc mantığına geçtik)
 const videosData = [
     {
         id: 1,
         title: "Görele Pide - Özel Tanıtım Filmi ve Dijital Menü",
-        thumbnail: "images/gorele-thumb.jpg",
-        videoSrc: "videos/gorele.mp4",
+        baseSrc: "videos/gorele", 
+        // Not: Bilgisayarında 'videos' klasöründe gorele_1080p.mp4, gorele_720p.mp4 vb. olmalı.
         date: "2026-06-15",
         description: "Görele Pide için hazırlanan yüksek çözünürlüklü mekan tanıtım filmi.",
-        customer: {
-            name: "Görele Pide",
-            address: "Darıca, Kocaeli",
-            phone: "+90 555 000 0000",
-            services: ["Video Prodüksiyon", "Dijital QR Menü", "SEO Optimizasyonu"]
-        }
-    },
-    {
-        id: 2,
-        title: "Hero's Pizza - Satış Odaklı Reklam Filmi",
-        thumbnail: "images/heros-thumb.jpg",
-        videoSrc: "videos/heros.mp4",
-        date: "2026-06-20",
-        description: "Hero's Pizza şubeleri için hazırlanan, modern kurgu teknikleri içeren dinamik reklam filmi.",
-        customer: {
-            name: "Hero's Pizza",
-            address: "Darıca, Kocaeli",
-            phone: "+90 555 111 1111",
-            services: ["Reklam Filmi", "Web Tasarım", "SEO"]
-        }
+        customer: { name: "Görele Pide", address: "Darıca, Kocaeli", phone: "+90 555 000 0000", services: ["Video", "QR Menü"] }
     }
 ];
 
@@ -34,103 +17,135 @@ const urlParams = new URLSearchParams(window.location.search);
 const videoId = parseInt(urlParams.get('id'));
 const currentVideo = videosData.find(v => v.id === videoId) || videosData[0];
 
-// 1. Arayüzü Doldurma Fonksiyonu
-function updateUI() {
-    if (!currentVideo) return;
+// Player Elemanları
+const video = document.getElementById('main-video');
+const playerWrapper = document.getElementById('custom-player');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const progressBar = document.querySelector('.progress-area');
+const progressFilled = document.querySelector('.progress-filled');
+const timeDisplay = document.getElementById('time-display');
+const skipEffect = document.getElementById('skip-effect');
+const qOptions = document.querySelectorAll('.q-option');
+const currentQBtn = document.getElementById('current-quality');
 
-    // Video Bilgileri
-    document.getElementById('main-video').src = currentVideo.videoSrc;
-    document.getElementById('watch-title').textContent = currentVideo.title;
-    document.getElementById('watch-date').textContent = `${currentVideo.date} tarihinde eklendi`;
-    document.getElementById('watch-description').textContent = currentVideo.description;
+let currentQuality = '1080p'; // Varsayılan kalite
+
+// 1. Videoyu Yükle
+function loadVideoSource() {
+    const time = video.currentTime;
+    const isPaused = video.paused;
     
-    // Müşteri Künyesi (Kanal) Bilgileri
-    document.getElementById('customer-name').textContent = currentVideo.customer.name;
-    document.getElementById('customer-initial').textContent = currentVideo.customer.name.charAt(0);
-    document.getElementById('customer-address').textContent = currentVideo.customer.address;
-    document.getElementById('customer-phone').textContent = currentVideo.customer.phone;
-
-    // Sağlanan Hizmetleri Etiket Olarak Basma
-    const servicesContainer = document.getElementById('customer-services');
-    servicesContainer.innerHTML = '';
-    currentVideo.customer.services.forEach(service => {
-        const span = document.createElement('span');
-        span.classList.add('service-tag');
-        span.textContent = service;
-        servicesContainer.appendChild(span);
-    });
-
-    // Sayfa Sekme Başlığını SEO Uyumlu Yapma
-    document.title = `${currentVideo.title} | NovTube Referanslar`;
-}
-
-// 2. Google Botları İçin Dinamik SEO (Schema Markup) Enjeksiyonu
-// Bu kod ekranda görünmez, sadece arama motorları okur ve siteni indeksler.
-function injectSEO() {
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
+    // Klasördeki dosyayı kalitesine göre çeker: Örn: videos/gorele_1080p.mp4
+    video.src = `${currentVideo.baseSrc}_${currentQuality}.mp4`;
     
-    // VideoObject Şeması
-    const schemaData = {
-        "@context": "https://schema.org",
-        "@type": "VideoObject",
-        "name": currentVideo.title,
-        "description": currentVideo.description,
-        "thumbnailUrl": `https://novtube.com/${currentVideo.thumbnail}`,
-        "uploadDate": currentVideo.date,
-        "contentUrl": `https://novtube.com/${currentVideo.videoSrc}`,
-        "publisher": {
-            "@type": "Organization",
-            "name": "NOV",
-            "logo": {
-                "@type": "ImageObject",
-                "url": "https://novtube.com/logo.png"
-            }
-        },
-        "author": {
-            "@type": "LocalBusiness",
-            "name": currentVideo.customer.name,
-            "address": currentVideo.customer.address,
-            "telephone": currentVideo.customer.phone
-        }
-    };
-
-    script.text = JSON.stringify(schemaData);
-    document.head.appendChild(script);
+    video.currentTime = time; // Kalite değiştiğinde süreyi kaybetmemek için
+    if(!isPaused) video.play();
 }
 
-// 3. Sağ Sütun Diğer Videolar
-function loadSuggested() {
-    const container = document.getElementById('suggested-videos');
-    const others = videosData.filter(v => v.id !== currentVideo.id);
-
-    others.forEach(video => {
-        const div = document.createElement('div');
-        div.classList.add('suggested-card');
-        div.onclick = () => window.location.href = `video.html?id=${video.id}`;
-        div.innerHTML = `
-            <div class="suggested-thumbnail">
-                <div style="background: #1a1a1a; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    NOV
-                </div>
-            </div>
-            <div class="suggested-info">
-                <h4 class="suggested-title">${video.title}</h4>
-                <span class="suggested-channel">${video.customer.name}</span>
-            </div>
-        `;
-        container.appendChild(div);
-    });
+// 2. Oynat / Durdur Mantığı
+function togglePlay() {
+    if(video.paused) {
+        video.play();
+        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        playerWrapper.classList.remove('paused');
+    } else {
+        video.pause();
+        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        playerWrapper.classList.add('paused');
+    }
 }
+playPauseBtn.addEventListener('click', togglePlay);
 
-// Tüm fonksiyonları sayfa yüklendiğinde tetikle
-document.addEventListener('DOMContentLoaded', () => {
-    updateUI();
-    injectSEO();
-    loadSuggested();
+// 3. Süre Güncelleme ve Bar
+video.addEventListener('timeupdate', () => {
+    const percent = (video.currentTime / video.duration) * 100;
+    progressFilled.style.width = `${percent}%`;
+    
+    let currentMins = Math.floor(video.currentTime / 60);
+    let currentSecs = Math.floor(video.currentTime % 60);
+    let durMins = Math.floor(video.duration / 60) || 0;
+    let durSecs = Math.floor(video.duration % 60) || 0;
+    
+    currentSecs = currentSecs < 10 ? `0${currentSecs}` : currentSecs;
+    durSecs = durSecs < 10 ? `0${durSecs}` : durSecs;
+    
+    timeDisplay.textContent = `${currentMins}:${currentSecs} / ${durMins}:${durSecs}`;
 });
 
-// Sol Menü Tıklama İşlevi (Temizlenmiş Haliyle)
-document.getElementById('menu-toggle')?.addEventListener('click', () => {
-    document.querySelector('.sidebar')?.classList.toggle('active');
+progressBar.addEventListener('click', (e) => {
+    const newTime = (e.offsetX / progressBar.offsetWidth) * video.duration;
+    video.currentTime = newTime;
+});
+
+// 4. Kalite Seçimi
+qOptions.forEach(option => {
+    option.addEventListener('click', () => {
+        qOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        currentQuality = option.getAttribute('data-q');
+        currentQBtn.textContent = currentQuality;
+        loadVideoSource();
+    });
+});
+
+// 5. ÇİFT TIKLAMA VE KLAVYE (Atlama Efektli)
+function skipTime(amount, direction) {
+    video.currentTime += amount;
+    
+    // Efekti Göster
+    skipEffect.innerHTML = direction === 'right' ? '<i class="fas fa-forward"></i><span>10s</span>' : '<i class="fas fa-backward"></i><span>10s</span>';
+    skipEffect.style.left = direction === 'right' ? '75%' : '25%'; // Sağa tıklarsa sağda, sola tıklarsa solda çıksın
+    
+    skipEffect.classList.add('show');
+    setTimeout(() => skipEffect.classList.remove('show'), 500);
+}
+
+// Mobilde/Ekranda Çift Tıklama
+let lastTap = 0;
+video.addEventListener('click', (e) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+    
+    if (tapLength < 300 && tapLength > 0) { // Çift tıklandıysa
+        const rect = video.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        if (clickX > rect.width / 2) {
+            skipTime(10, 'right'); // Sağ yarıya tıklandı
+        } else {
+            skipTime(-10, 'left'); // Sol yarıya tıklandı
+        }
+    } else {
+        // Tek tıklama gecikmeli olarak durdur/başlat yapsın (çift tık ile çakışmaması için)
+        setTimeout(() => {
+            if (new Date().getTime() - lastTap >= 300) togglePlay();
+        }, 300);
+    }
+    lastTap = currentTime;
+});
+
+// Bilgisayar Sağ/Sol Yön Tuşları
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') {
+        skipTime(10, 'right');
+    } else if (e.key === 'ArrowLeft') {
+        skipTime(-10, 'left');
+    } else if (e.key === ' ') { // Boşluk tuşu ile durdur
+        e.preventDefault();
+        togglePlay();
+    }
+});
+
+// 6. Tam Ekran
+document.getElementById('fullscreen-btn').addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        playerWrapper.requestFullscreen().catch(err => alert("Tam ekran desteklenmiyor."));
+    } else {
+        document.exitFullscreen();
+    }
+});
+
+// Sayfa ilk yüklendiğinde kaliteyi basıp SEO'yu güncelle (Önceki SEO scriptleri aynen durabilir)
+document.addEventListener('DOMContentLoaded', () => {
+    loadVideoSource();
+    video.play();
 });

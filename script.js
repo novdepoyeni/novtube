@@ -1,95 +1,87 @@
-// Adım 2: NovTube Dinamik Veri ve Yönlendirme Altyapısı
+// Adım 1: Ana Sayfa Dinamikleri (script.js) - Eski kodun yerine bunu koyabilirsin
 
-// 'videos' ve 'images' klasöründe olduğunu varsaydığımız içeriklerin veri tabanı
+// Ana Sayfa Verileri (Artık kapak fotoğrafı değil, video önizlemesi var)
 const videosData = [
     {
         id: 1,
-        title: "NOV - Kurumsal Marka Tanıtımı",
-        thumbnail: "images/thumb1.jpg", // Kapak fotoğrafları için
-        videoSrc: "videos/video1.mp4",  // Videoların çekileceği kaynak
-        duration: "01:45",
-        views: "1.2 B Görüntülenme",
-        date: "2 gün önce"
+        title: "Görele Pide - Özel Tanıtım Filmi",
+        baseSrc: "videos/gorele", // Kalite ayarı için artık sadece dosyanın adını veriyoruz (.mp4 hariç)
+        customerName: "Görele Pide",
+        views: "1.2 B Görüntülenme"
     },
     {
         id: 2,
-        title: "Minimalist Animasyon Projesi",
-        thumbnail: "images/thumb2.jpg",
-        videoSrc: "videos/video2.mp4",
-        duration: "00:30",
-        views: "850 Görüntülenme",
-        date: "1 hafta önce"
-    },
-    {
-        id: 3,
-        title: "Ürün Lansman Reklamı",
-        thumbnail: "images/thumb3.jpg",
-        videoSrc: "videos/video3.mp4",
-        duration: "02:15",
-        views: "3.4 B Görüntülenme",
-        date: "1 ay önce"
-    },
-    {
-        id: 4,
-        title: "Sinematik İntro Çalışması",
-        thumbnail: "images/thumb4.jpg",
-        videoSrc: "videos/video4.mp4",
-        duration: "00:15",
-        views: "5.1 B Görüntülenme",
-        date: "2 ay önce"
+        title: "Hero's Pizza - Reklam Filmi",
+        baseSrc: "videos/heros",
+        customerName: "Hero's Pizza",
+        views: "3.4 B Görüntülenme"
     }
 ];
 
-// DOM Elementlerini Seçme
 const videoGrid = document.getElementById('video-grid');
 
-// Ana Sayfada Videoları Render Etme (Oluşturma) Fonksiyonu
-function loadVideos() {
-    // Eğer bulunduğumuz sayfada 'video-grid' yoksa (örn: izleme sayfasındaysak) bu kod çalışmasın
+function loadHomepageVideos() {
     if (!videoGrid) return;
-
-    videoGrid.innerHTML = ''; // İçerideki statik/örnek HTML'i temizle
+    videoGrid.innerHTML = '';
 
     videosData.forEach(video => {
-        const videoCard = document.createElement('div');
-        videoCard.classList.add('video-card');
+        const card = document.createElement('div');
+        card.classList.add('video-card');
         
-        // Tıklama Olayı: URL'ye video ID'sini parametre olarak ekle ve izleme sayfasına yönlendir
-        videoCard.onclick = () => {
-            window.location.href = `video.html?id=${video.id}`;
-        };
-
-        // Kartın İçeriği (Siyah-Beyaz temaya uygun yapı)
-        videoCard.innerHTML = `
-            <div class="thumbnail">
-                <div class="thumbnail-placeholder" style="background: #1a1a1a; border: 1px solid #333;">
-                    ${video.title.substring(0, 15)}...
-                </div>
-                <span class="video-duration">${video.duration}</span>
-            </div>
+        // Kart İçeriği
+        card.innerHTML = `
+            <div class="preview-container">
+                <video class="preview-video" src="${video.baseSrc}_240p.mp4" muted loop playsinline></video>
+                <button class="unmute-btn" data-muted="true"><i class="fas fa-volume-mute"></i></button>
+                <div class="click-overlay"></div> </div>
             <div class="video-info">
                 <div class="video-details">
                     <h3 class="video-title">${video.title}</h3>
-                    <p class="video-channel">NOV</p>
-                    <p class="video-views">${video.views} • ${video.date}</p>
+                    <p class="video-channel">${video.customerName}</p>
                 </div>
             </div>
         `;
-        
-        videoGrid.appendChild(videoCard);
+
+        const vidEl = card.querySelector('.preview-video');
+        const unmuteBtn = card.querySelector('.unmute-btn');
+        const overlay = card.querySelector('.click-overlay');
+
+        // Yönlendirme: Sadece overlay'e tıklanırsa izleme sayfasına git
+        overlay.addEventListener('click', () => {
+            window.location.href = `video.html?id=${video.id}`;
+        });
+
+        // Ses Aç/Kapat Butonu
+        unmuteBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Sayfa değişimini engelle
+            vidEl.muted = !vidEl.muted;
+            unmuteBtn.innerHTML = vidEl.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+        });
+
+        // Masaüstü: Fare üzerine gelince oynat
+        card.addEventListener('mouseenter', () => vidEl.play());
+        card.addEventListener('mouseleave', () => {
+            vidEl.pause();
+            vidEl.muted = true; // Çıkınca sesi hep kapat
+            unmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        });
+
+        videoGrid.appendChild(card);
     });
+
+    // Mobil: Ekranda (ViewPort) Göründüğünde Otomatik Oynat
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const vid = entry.target.querySelector('.preview-video');
+            if (entry.isIntersecting) {
+                vid.play();
+            } else {
+                vid.pause();
+            }
+        });
+    }, { threshold: 0.5 }); // Videonun %50'si ekrana girince çalışır
+
+    document.querySelectorAll('.video-card').forEach(card => observer.observe(card));
 }
 
-// Sayfa yüklendiğinde loadVideos fonksiyonunu çalıştır
-document.addEventListener('DOMContentLoaded', loadVideos);
-
-// Hamburger Menü (Üç Çizgi) İşlevi
-const menuIcon = document.querySelector('.menu-icon');
-const sidebar = document.querySelector('.sidebar');
-
-if (menuIcon && sidebar) {
-    menuIcon.addEventListener('click', () => {
-        // 'active' sınıfını ekle veya çıkar
-        sidebar.classList.toggle('active');
-    });
-}
+document.addEventListener('DOMContentLoaded', loadHomepageVideos);

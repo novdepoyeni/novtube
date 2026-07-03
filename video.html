@@ -39,16 +39,18 @@
             </div>
             
             <div class="controls-right">
-                <div class="quality-selector">
-                    <button class="player-btn quality-btn" id="current-quality">1080p</button>
-                    <div class="quality-dropdown">
-                        <div class="q-option active" data-q="1080p">1080p (HD)</div>
-                        <div class="q-option" data-q="720p">720p</div>
-                        <div class="q-option" data-q="480p">480p</div>
-                        <div class="q-option" data-q="360p">360p</div>
-                        <div class="q-option" data-q="240p">240p</div>
-                    </div>
-                </div>
+                <!-- Hız Seçici Menü -->
+<div class="speed-selector">
+    <button class="player-btn speed-btn" id="current-speed">1x</button>
+    <div class="speed-dropdown">
+        <div class="s-option" data-speed="0.5">0.5x</div>
+        <div class="s-option" data-speed="0.75">0.75x</div>
+        <div class="s-option active" data-speed="1">1x (Normal)</div>
+        <div class="s-option" data-speed="1.25">1.25x</div>
+        <div class="s-option" data-speed="1.5">1.5x</div>
+        <div class="s-option" data-speed="2">2x</div>
+    </div>
+</div>
                 <button class="player-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
             </div>
         </div>

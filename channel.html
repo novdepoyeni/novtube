@@ -1,1 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanal | NovTube</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .channel-header { background: #1a1a1a; padding: 40px 20px; text-align: center; border-bottom: 1px solid #333; }
+        .channel-header .ch-logo-big { width: 80px; height: 80px; background: #fff; color: #000; border-radius: 50%; font-size: 32px; font-weight: bold; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
+        .channel-header h1 { font-size: 24px; margin-bottom: 5px; }
+        .channel-header p { color: #aaa; font-size: 14px; }
+        .channel-content { padding: 20px; }
+    </style>
+</head>
+<body>
 
+    <header class="navbar">
+        <div class="nav-left"><a href="index.html" class="logo">Nov<span>Tube</span></a></div>
+    </header>
+
+    <div class="channel-header" id="ch-header">
+        </div>
+
+    <main class="channel-content">
+        <h3 style="margin-bottom: 20px;">Videolar</h3>
+        <section class="video-grid" id="channel-videos">
+            </section>
+    </main>
+
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Ana Sayfa</span></a>
+        <a href="shorts.html" class="nav-item"><i class="fa-solid fa-bolt"></i><span>Kısa Videolar</span></a>
+        <a href="customers.html" class="nav-item"><i class="fa-solid fa-handshake"></i><span>Müşteriler</span></a>
+    </nav>
+
+    <script src="data.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const channelName = urlParams.get('name');
+        
+        // Sadece bu müşterinin videolarını bul
+        const channelVids = videosData.filter(v => v.customer.name === channelName);
+        
+        if (channelVids.length > 0) {
+            const customer = channelVids[0].customer;
+            
+            // Kanal Üst Bilgisi
+            document.getElementById('ch-header').innerHTML = `
+                <div class="ch-logo-big">${customer.name.charAt(0)}</div>
+                <h1>${customer.name}</h1>
+                <p><i class="fas fa-map-marker-alt"></i> ${customer.address} &nbsp;|&nbsp; <i class="fas fa-phone"></i> ${customer.phone}</p>
+            `;
+
+            // Videoları Diz (Ana sayfadaki çerçevenin aynısı, ama JavaScript'i burada kopyalayarak basit tuttuk)
+            const grid = document.getElementById('channel-videos');
+            channelVids.forEach(video => {
+                const card = document.createElement('div');
+                card.classList.add('video-card');
+                card.innerHTML = `
+                    <div class="preview-container">
+                        <video class="preview-video" src="${video.videoSrc}" muted playsinline></video>
+                        <div class="click-overlay" onclick="window.location.href='video.html?id=${video.id}'"></div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-details">
+                            <h3 class="video-title">${video.title}</h3>
+                        </div>
+                    </div>
+                `;
+                
+                // Fareyle üstüne gelince oynatma efekti
+                const vid = card.querySelector('.preview-video');
+                card.addEventListener('mouseenter', () => vid.play());
+                card.addEventListener('mouseleave', () => { vid.pause(); });
+                
+                grid.appendChild(card);
+            });
+        } else {
+            document.getElementById('ch-header').innerHTML = `<h1>Kanal Bulunamadı</h1>`;
+        }
+    </script>
+</body>
+</html>

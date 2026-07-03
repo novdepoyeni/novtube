@@ -1,57 +1,14 @@
 // ==========================================
 // İZLEME SAYFASI VE ÖZEL PLAYER (video-script.js)
+// Not: Videolar ve müşteri bilgileri data.js'den otomatik çekilir.
 // ==========================================
 
-// 1. Veritabanı (script.js ile birebir aynı olmalı)
-const videosData = [
-    {
-        id: 1,
-        title: "Görele Pide - Özel Tanıtım Filmi",
-        videoSrc: "videos/gorele.mp4",
-        date: "2026-06-15",
-        description: "Görele Pide için hazırlanan yüksek çözünürlüklü mekan tanıtım filmi.",
-        customer: {
-            name: "Görele Pide",
-            address: "Darıca, Kocaeli",
-            phone: "+90 555 000 0000",
-            services: ["Video Prodüksiyon", "Dijital QR Menü", "SEO"]
-        }
-    },
-    {
-        id: 2,
-        title: "Hero's Pizza - Satış Odaklı Reklam Filmi",
-        videoSrc: "videos/heros.mp4",
-        date: "2026-06-20",
-        description: "Hero's Pizza şubeleri için hazırlanan dinamik reklam filmi.",
-        customer: {
-            name: "Hero's Pizza",
-            address: "Darıca, Kocaeli",
-            phone: "+90 555 111 1111",
-            services: ["Reklam Filmi", "Web Tasarım", "SEO"]
-        }
-    },
-    {
-        id: 3,
-        title: "Marley Döner - Marka İntro & Ürün Çekimi",
-        videoSrc: "videos/marley.mp4",
-        date: "2026-07-01",
-        description: "Marley Döner Zurna ve Hatay dürümleri için özel siyah-kırmızı konseptli tanıtım.",
-        customer: {
-            name: "Marley Döner",
-            address: "Kocaeli",
-            phone: "+90 555 222 2222",
-            services: ["Web Tasarım", "Ürün Çekimi", "SEO"]
-        }
-    }
-];
-
-// URL'den ID'yi çek ve videoyu bul
+// URL'den ID'yi çek ve videoyu bul (Eğer direkt sayfaya girilirse ilk videoyu açar)
 const urlParams = new URLSearchParams(window.location.search);
 const videoId = parseInt(urlParams.get('id'));
 const currentVideo = videosData.find(v => v.id === videoId) || videosData[0];
 
-// --- ARAYÜZ VE SEO BÖLÜMÜ ---
-
+// --- 1. ARAYÜZÜ DOLDURMA VE SEO BÖLÜMÜ ---
 function updateUI() {
     if (!currentVideo) return;
 
@@ -78,7 +35,7 @@ function updateUI() {
         });
     }
     
-    // Sekme Başlığı
+    // Sekme Başlığı (SEO)
     document.title = `${currentVideo.title} | NovTube Referanslar`;
 }
 
@@ -107,6 +64,7 @@ function loadSuggested() {
     const container = document.getElementById('suggested-videos');
     if (!container) return;
     
+    // Şu an izlenen video dışındakileri listele
     const others = videosData.filter(v => v.id !== currentVideo.id);
     others.forEach(video => {
         const div = document.createElement('div');
@@ -128,13 +86,14 @@ function loadSuggested() {
 }
 
 // Sol Menü Tıklama İşlevi (İzleme sayfası için)
-document.getElementById('menu-toggle')?.addEventListener('click', () => {
-    document.querySelector('.sidebar')?.classList.toggle('active');
-});
+const menuToggle = document.getElementById('menu-toggle');
+if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+        document.querySelector('.sidebar')?.classList.toggle('active');
+    });
+}
 
-
-// --- ÖZEL PLAYER (OYNATICI) BÖLÜMÜ ---
-
+// --- 2. ÖZEL PLAYER (OYNATICI) BÖLÜMÜ ---
 const video = document.getElementById('main-video');
 const playerWrapper = document.getElementById('custom-player');
 const playPauseBtn = document.getElementById('play-pause-btn');
@@ -146,14 +105,14 @@ const sOptions = document.querySelectorAll('.s-option');
 const currentSBtn = document.getElementById('current-speed');
 
 if (video) {
-    // 1. Videoyu Yükle
+    // Videoyu Yükle
     video.src = currentVideo.videoSrc;
 
-    // 2. Oynat / Durdur Mantığı
+    // Oynat / Durdur Mantığı
     function togglePlay() {
         if (video.paused) {
             video.play();
-            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
             playerWrapper.classList.remove('paused');
         } else {
             video.pause();
@@ -163,7 +122,7 @@ if (video) {
     }
     playPauseBtn?.addEventListener('click', togglePlay);
 
-    // 3. Süre Güncelleme ve İlerleme Çubuğu
+    // Süre Güncelleme ve İlerleme Çubuğu
     video.addEventListener('timeupdate', () => {
         const percent = (video.currentTime / video.duration) * 100;
         if(progressFilled) progressFilled.style.width = `${percent}%`;
@@ -184,7 +143,7 @@ if (video) {
         video.currentTime = newTime;
     });
 
-    // 4. Hız (Speed) Seçimi
+    // Hız (Speed) Seçimi
     sOptions.forEach(option => {
         option.addEventListener('click', () => {
             sOptions.forEach(opt => opt.classList.remove('active'));
@@ -196,7 +155,7 @@ if (video) {
         });
     });
 
-    // 5. Çift Tıklama ve Klavye Algılama (İleri/Geri Sarma)
+    // Çift Tıklama ve Klavye Algılama (İleri/Geri Sarma)
     function skipTime(amount, direction) {
         video.currentTime += amount;
         if(skipEffect) {
@@ -221,7 +180,6 @@ if (video) {
                 skipTime(-10, 'left');
             }
         } else {
-            // Tek tıklama (durdur/başlat)
             setTimeout(() => {
                 if (new Date().getTime() - lastTap >= 300) togglePlay();
             }, 300);
@@ -240,7 +198,7 @@ if (video) {
         }
     });
 
-    // 6. Tam Ekran
+    // Tam Ekran
     document.getElementById('fullscreen-btn')?.addEventListener('click', () => {
         if (!document.fullscreenElement) {
             playerWrapper.requestFullscreen().catch(err => console.log("Tam ekran desteklenmiyor."));

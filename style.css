@@ -1021,3 +1021,16 @@ body {
     padding: 30px 10px 10px; color: #fff; font-size: 14px; font-weight: 600;
 
 } 
+
+/* =========================================
+   YENİ EKLENEN: KÜÇÜK RESİM (THUMBNAIL) EFEKTİ
+========================================= */
+.video-thumbnail {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 5; /* Videonun üstünde, butonların altında kalır */
+    transition: opacity 0.5s ease-in-out; /* 1 saniye sonra şıkça erimesi için geçiş efekti */
+    pointer-events: none; /* Tıklamaları engellememesi için */
+}

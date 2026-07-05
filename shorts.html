@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kısa Videolar | NovTube</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Shorts Özel CSS (Sayfaya Gömülü, Sadece Burada Çalışır) */
+        body { overflow: hidden; background-color: #000; }
+        
+        .shorts-container {
+            position: absolute; top: 60px; bottom: 0; left: 0; right: 0;
+            overflow-y: scroll; scroll-snap-type: y mandatory;
+            scrollbar-width: none; /* Firefox gizleme */
+        }
+        .shorts-container::-webkit-scrollbar { display: none; } /* Chrome gizleme */
+        
+        /* Mobilde alt menü yüksekliği kadar boşluk bırak */
+        @media (max-width: 768px) { .shorts-container { bottom: 65px; top: 0; } }
+
+        .short-wrapper {
+            position: relative; width: 100%; height: 100%;
+            scroll-snap-align: start; display: flex; justify-content: center; align-items: center;
+            background-color: #050505;
+        }
+
+        .short-video {
+            width: 100%; height: 100%;
+            object-fit: contain; /* PC'de yayılmasın, dikey kalsın */
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) { .short-video { object-fit: cover; } }
+
+        /* Arayüz Elemanları */
+        .short-ui {
+            position: absolute; bottom: 20px; left: 20px; right: 80px;
+            z-index: 10; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        .short-title { font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+        .short-channel { font-size: 14px; opacity: 0.9; }
+
+        /* Sağ Üst Hız ve Ses Butonları */
+        .short-controls-right {
+            position: absolute; top: 20px; right: 20px;
+            display: flex; flex-direction: column; gap: 15px; z-index: 20;
+        }
+        .s-btn {
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; width: 45px; height: 45px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 16px; font-weight: bold; cursor: pointer; backdrop-filter: blur(5px);
+        }
+
+        /* Oynat/Duraklat Efekti (Ekrana tıklayınca beliren ikon) */
+        .play-pause-animation {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.5);
+            font-size: 60px; color: rgba(255,255,255,0.7); opacity: 0; pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 15;
+        }
+        .play-pause-animation.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    </header>
+    </style>
+</head>
+<body>
+
+    <header class="navbar" style="position: absolute; width: 100%; z-index: 100; background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent); border: none;">
+        <div class="nav-left">
+            <a href="index.html" class="logo" style="text-shadow: 0 2px 5px #000;">Nov<span>Tube</span></a>
+        </div>
+    </header>
+
+    <main class="shorts-container" id="shorts-container">
+        <!-- JS ile videolar buraya dizilecek -->
+    </main>
+
+    <nav class="mobile-bottom-nav" style="background-color: #000;">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Ana Sayfa</span></a>
+        <a href="shorts.html" class="nav-item active"><i class="fa-solid fa-bolt"></i><span>Kısa Videolar</span></a>
+        <a href="customers.html" class="nav-item"><i class="fa-solid fa-handshake"></i><span>Müşteriler</span></a>
+    </nav>
+
+    <script src="data.js"></script>
+    <script>
+        const container = document.getElementById('shorts-container');
+
+        // Videoları Ekrana Basan Fonksiyon
+        function renderShorts(dataArray) {
+            dataArray.forEach(short => {
+                const wrapper = document.createElement('div');
+                wrapper.classList.add('short-wrapper');
+                
+                wrapper.innerHTML = `
+                    <video class="short-video" src="${short.videoSrc}" loop playsinline preload="metadata"></video>
+                    
+                    <div class="play-pause-animation"><i class="fas fa-play"></i></div>
+                    
+                    <div class="short-ui">
+                        <div class="short-title">${short.title}</div>
+                        <div class="short-channel">@${short.customerName.replace(/\s+/g, '').toLowerCase()}</div>
+                    </div>
+
+                    <div class="short-controls-right">
+                        <button class="s-btn speed-btn" data-speed="1">1x</button>
+                        <button class="s-btn mute-btn"><i class="fas fa-volume-mute"></i></button>
+                    </div>
+                `;
+                container.appendChild(wrapper);
+
+                const vid = wrapper.querySelector('.short-video');
+                const anim = wrapper.querySelector('.play-pause-animation');
+                const speedBtn = wrapper.querySelector('.speed-btn');
+                const muteBtn = wrapper.querySelector('.mute-btn');
+
+                // Tıklama ile Durdur/Başlat
+                vid.addEventListener('click', () => {
+                    if (vid.paused) {
+                        vid.play();
+                        anim.innerHTML = '<i class="fas fa-play"></i>';
+                    } else {
+                        vid.pause();
+                        anim.innerHTML = '<i class="fas fa-pause"></i>';
+                    }
+                    anim.classList.add('show');
+                    setTimeout(() => anim.classList.remove('show'), 500);
+                });
+
+                // Hız Ayarı Döngüsü (1x -> 1.5x -> 2x -> 0.5x -> 1x)
+                speedBtn.addEventListener('click', () => {
+                    let current = parseFloat(speedBtn.dataset.speed);
+                    let next = current === 1 ? 1.5 : current === 1.5 ? 2 : current === 2 ? 0.5 : 1;
+                    vid.playbackRate = next;
+                    speedBtn.dataset.speed = next;
+                    speedBtn.textContent = next + 'x';
+                });
+
+                // Ses Ayarı
+                muteBtn.addEventListener('click', () => {
+                    vid.muted = !vid.muted;
+                    muteBtn.innerHTML = vid.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+                });
+            });
+        }
+
+        renderShorts(shortsData);
+
+        // Akıllı Kaydırma (Sadece ekrandaki videoyu oynat, diğerlerini durdur)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const vid = entry.target.querySelector('.short-video');
+                if (entry.isIntersecting) {
+                    vid.play().catch(e => console.log("Otomatik oynatma beklemede"));
+                    // Sonsuz Döngü Mantığı: Eğer son videoya gelindiyse, listeyi tekrar alta ekle
+                    if(entry.target === container.lastElementChild) {
+                        renderShorts(shortsData); 
+                        // Yeni eklenenleri de gözlemciye tanıt
+                        Array.from(container.children).slice(-shortsData.length).forEach(newEl => observer.observe(newEl));
+                    }
+                } else {
+                    vid.pause();
+                    vid.currentTime = 0; // Ekrandan çıkınca başa sar
+                }
+            });
+        }, { threshold: 0.6 });
+
+        document.querySelectorAll('.short-wrapper').forEach(wrap => observer.observe(wrap));
+    </script>
+</body>
+</html>

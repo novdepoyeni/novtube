@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İş Ortakları & Kanallar | NovTube</title>
+    <meta name="description" content="NOV Medya Ajansı iş ortakları ve referans kanalları. Müşterilerimize sunduğumuz profesyonel video prodüksiyon ve SEO hizmetleri.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-left"><a href="index.html" class="logo">Nov<span>Tube</span></a></div>
+    </header>
+
+    <main class="main-container" style="display: block; overflow-y: auto;">
+        <div style="text-align: center; padding: 40px 20px 10px;">
+            <h1 style="font-size: 28px; color: #fff;">İş Ortaklarımız</h1>
+            <p style="color: #888; margin-top: 10px;">Profesyonel prodüksiyon ve dijital çözümler sunduğumuz markalar.</p>
+        </div>
+
+        <section class="customers-container" id="customers-container">
+            </section>
+    </main>
+
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Ana Sayfa</span></a>
+        <a href="shorts.html" class="nav-item"><i class="fa-solid fa-bolt"></i><span>Kısa Videolar</span></a>
+        <a href="customers.html" class="nav-item active"><i class="fa-solid fa-handshake"></i><span>Müşteriler</span></a>
+    </nav>
+
+    <script src="data.js"></script>
+    <script>
+        const container = document.getElementById('customers-container');
+        const uniqueCustomers = [];
+        const seenNames = new Set();
+
+        // data.js üzerinden tekrarsız müşteri listesi oluşturma
+        videosData.forEach(v => {
+            if(!seenNames.has(v.customer.name)) {
+                seenNames.add(v.customer.name);
+                uniqueCustomers.push(v.customer);
+            }
+        });
+
+        uniqueCustomers.forEach(customer => {
+            const card = document.createElement('div');
+            card.classList.add('channel-card');
+            card.onclick = () => window.location.href = `channel.html?name=${encodeURIComponent(customer.name)}`;
+            
+            card.innerHTML = `
+                <div class="ch-logo">${customer.name.charAt(0)}</div>
+                <h3>${customer.name}</h3>
+                <p><i class="fas fa-map-marker-alt"></i> ${customer.address}</p>
+                <div style="margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;">
+                    ${customer.services.map(s => `<span class="service-tag" style="background:#222; border:none; border-radius:12px; padding:4px 10px;">${s}</span>`).join('')}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        // Google İçin Müşteri Rehberi (LocalBusiness Schema)
+        const schemaScript = document.createElement('script');
+        schemaScript.type = 'application/ld+json';
+        const businessList = uniqueCustomers.map(c => ({
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": c.name,
+            "address": c.address,
+            "telephone": c.phone
+        }));
+        schemaScript.text = JSON.stringify(businessList);
+        document.head.appendChild(schemaScript);
+    </script>
+</body>
+</html>

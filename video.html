@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Video Yükleniyor... | NovTube Referanslar</title>
+    <meta name="description" content="NOV Medya Ajansı tarafından profesyonel kaliteyle hazırlanmış kurumsal video prodüksiyon referansımız.">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="navbar" style="background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <div class="nav-left">
+            <a href="index.html" class="logo" style="text-shadow: 0 0 15px rgba(255,255,255,0.1); letter-spacing: -0.5px;">Nov<span style="color: #888;">Tube</span></a>
+        </div>
+        <div class="nav-right">
+            <a href="https://novedit.com.tr" target="_blank" style="text-decoration: none; color: #fff; border: 1px solid #333; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; transition: all 0.3s ease; background: linear-gradient(145deg, #1a1a1a, #0d0d0d); box-shadow: 0 4px 10px rgba(0,0,0,0.5);">NOV Ajans <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 4px; color: #888;"></i></a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        
+        <aside class="sidebar" style="border-right: 1px solid rgba(255,255,255,0.05);">
+            <a href="index.html" class="nav-link">
+                <i class="fas fa-home"></i>
+                <span>Ana Sayfa</span>
+            </a>
+            <a href="shorts.html" class="nav-link">
+                <i class="fas fa-bolt"></i>
+                <span>Kısa Videolar</span>
+            </a>
+            <a href="customers.html" class="nav-link">
+                <i class="fas fa-handshake"></i>
+                <span>Müşteriler</span>
+            </a>
+        </aside>
+
+        <div style="flex: 1; overflow-y: auto; background-color: var(--bg-color); padding-bottom: 80px;">
+            <div class="watch-container">
+                
+                <article class="watch-main">
+                    
+                    <div class="player-wrapper" id="custom-player" style="box-shadow: 0 20px 50px rgba(0,0,0,0.9); border: 1px solid #222; border-radius: 16px;">
+                        <video id="main-video" playsinline preload="metadata"></video>
+                        
+                        <div class="skip-effect" id="skip-effect">
+                            <i class="fas fa-forward"></i>
+                            <span>10s</span>
+                        </div>
+
+                        <div class="player-controls">
+                            <div class="progress-area">
+                                <div class="progress-bar"><div class="progress-filled"></div></div>
+                            </div>
+                            
+                            <div class="controls-main">
+                                <div class="controls-left">
+                                    <button class="player-btn" id="play-pause-btn"><i class="fas fa-play"></i></button>
+                                    <span class="time-display" id="time-display">0:00 / 0:00</span>
+                                </div>
+                                
+                                <div class="controls-right">
+                                    <div class="speed-selector">
+                                        <button class="player-btn speed-btn" id="current-speed">1x</button>
+                                        <div class="speed-dropdown">
+                                            <div class="s-option" data-speed="0.5">0.5x</div>
+                                            <div class="s-option" data-speed="0.75">0.75x</div>
+                                            <div class="s-option active" data-speed="1">1x (Normal)</div>
+                                            <div class="s-option" data-speed="1.25">1.25x</div>
+                                            <div class="s-option" data-speed="1.5">1.5x</div>
+                                            <div class="s-option" data-speed="2">2x</div>
+                                        </div>
+                                    </div>
+                                    <button class="player-btn" id="fullscreen-btn"><i class="fas fa-expand"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="video-details-section" style="margin-top: 25px;">
+                        <h1 id="watch-title" class="watch-video-title" style="font-size: 24px; letter-spacing: -0.5px; margin-bottom: 8px;">Video Yükleniyor...</h1>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #222; padding-bottom: 15px;">
+                            <p class="upload-date" id="watch-date" style="color: #888; font-weight: 500; font-size: 14px; margin: 0;"></p>
+                            
+                            <span style="background: #ffffff; color: #000000; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 1.5px; box-shadow: 0 0 10px rgba(255,255,255,0.2);">NOV EXCLUSIVE</span>
+                        </div>
+                        
+                        <div class="video-description-box" style="background: linear-gradient(145deg, #111111, #0a0a0a); border: 1px solid #1f1f1f; border-radius: 12px;">
+                            <p class="description-text" id="watch-description" style="color: #cccccc; font-size: 15px; line-height: 1.6; font-weight: 400;">
+                                İçerik yükleniyor...
+                            </p>
+                        </div>
+                    </div>
+                </article>
+
+                <aside class="watch-sidebar">
+                    
+                    <div class="customer-card" id="customer-card" style="background: linear-gradient(to bottom right, #151515, #0d0d0d); border: 1px solid #262626; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                        <div class="customer-header">
+                            <div class="customer-logo" id="customer-initial" style="background: linear-gradient(135deg, #ffffff, #cccccc); color: #000; font-weight: 800; font-size: 22px;">C</div>
+                            <div class="customer-title-wrap">
+                                <h3 id="customer-name" style="font-size: 18px; letter-spacing: 0.5px;">Müşteri Adı</h3>
+                                <span class="customer-badge" style="background: transparent; color: #aaa; border: 1px solid #444; padding: 2px 8px; font-size: 10px; letter-spacing: 1px;">RESMİ İŞ ORTAĞI</span>
+                            </div>
+                        </div>
+                        <div class="customer-body">
+                            <p style="color: #bbb;"><i class="fas fa-map-marker-alt" style="color: #fff; width: 20px; text-align: center;"></i> <span id="customer-address">Adres Bilgisi</span></p>
+                            <p style="color: #bbb;"><i class="fas fa-phone-alt" style="color: #fff; width: 20px; text-align: center;"></i> <span id="customer-phone">Telefon Bilgisi</span></p>
+                            
+                            <div class="provided-services" id="customer-services" style="margin-top: 20px; border-top: 1px solid #222; padding-top: 15px;"></div>
+                        </div>
+                    </div>
+
+                    <div id="suggested-videos-wrapper">
+                        <h4 class="sidebar-heading" style="font-size: 15px; color: #fff; letter-spacing: 0.5px; text-transform: uppercase;">Diğer Çalışmalar</h4>
+                        <div id="suggested-videos" style="display: flex; flex-direction: column; gap: 15px; margin-top: 15px;">
+                            </div>
+                    </div>
+
+                </aside>
+
+            </div>
+        </div>
+    </main>
+
+    <nav class="mobile-bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Ana Sayfa</span>
+        </a>
+        <a href="shorts.html" class="nav-item">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Kısa Videolar</span>
+        </a>
+        <a href="customers.html" class="nav-item">
+            <i class="fa-solid fa-handshake"></i>
+            <span>Müşteriler</span>
+        </a>
+    </nav>
+
+    <script src="data.js"></script> 
+    <script src="video-script.js"></script>
+</body>
+</html>

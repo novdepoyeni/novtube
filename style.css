@@ -98,31 +98,48 @@ body {
 .nav-link i { font-size: 20px; }
 
 /* =========================================
-   4. ANA SAYFA VİDEO KARTLARI (Yeni Çerçeveli Tasarım)
+   4. ANA SAYFA VİDEO KARTLARI (Premium Tasarım)
 ========================================= */
 .video-grid {
     flex: 1;
-    padding: 20px;
+    padding: 30px 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
     overflow-y: auto;
-    background-color: #000000;
+    background-color: var(--bg-color);
 }
 
 .video-card {
-    background-color: #0d0d0d; 
-    border: 1px solid #262626; 
+    background: linear-gradient(145deg, #111111, #0a0a0a);
+    border: 1px solid #1f1f1f;
     border-radius: 16px;
-    padding: 12px; 
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    padding: 12px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
+/* Premium Işık/Parlama Efekti (Hover) */
+.video-card::before {
+    content: ''; 
+    position: absolute; 
+    top: 0; left: -100%; 
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.03), transparent);
+    transform: skewX(-20deg); 
+    transition: 0.5s; 
+    z-index: 1;
+    pointer-events: none;
+}
+
+.video-card:hover::before { left: 150%; }
+
 .video-card:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05); 
-    border-color: #555; 
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 255, 255, 0.05);
+    border-color: #444;
 }
 
 .preview-container {
@@ -161,7 +178,7 @@ body {
     backdrop-filter: blur(4px);
 }
 
-.video-info { display: flex; margin-top: 12px; }
+.video-info { display: flex; margin-top: 12px; position: relative; z-index: 2; }
 .video-details { flex: 1; }
 .video-title {
     font-size: 16px; font-weight: 600; margin-bottom: 5px;
@@ -170,24 +187,23 @@ body {
 .video-channel { font-size: 14px; color: var(--text-muted); }
 
 /* =========================================
-   5. VİDEO İZLEME SAYFASI (Video PC'de Büyük Görünmesi İçin Düzeltildi)
+   5. VİDEO İZLEME SAYFASI (Video PC'de Büyük)
 ========================================= */
 .watch-container {
     display: flex;
     gap: 24px;
     padding: 24px;
     max-width: 1600px;
-    width: 100%; /* KRİTİK ÇÖZÜM: PC'de videonun küçülmesini engeller */
+    width: 100%;
     margin: 0 auto;
 }
 
 .watch-main {
     flex: 1;
     min-width: 0; 
-    width: 100%; /* Flexin içe çökmesini engeller */
+    width: 100%;
 }
 
-/* Özel Oynatıcı Kapsayıcısı (Mobilde kaybolmaması için sabitlendi) */
 .player-wrapper, #custom-player {
     position: relative;
     width: 100%;
@@ -212,7 +228,6 @@ body {
     outline: none;
 }
 
-/* Video Altı Detaylar */
 .watch-video-title { font-size: 20px; font-weight: bold; margin-bottom: 12px; color: var(--text-color); }
 .video-description-box {
     background-color: var(--hover-bg);
@@ -221,7 +236,7 @@ body {
 .upload-date { font-weight: bold; margin-bottom: 8px; }
 
 /* =========================================
-   6. MÜŞTERİ KÜNYESİ (Sağ Sütun)
+   6. MÜŞTERİ KÜNYESİ (İzleme Sayfası Sağ Sütun)
 ========================================= */
 .watch-sidebar { width: 400px; display: flex; flex-direction: column; gap: 12px; }
 
@@ -236,7 +251,7 @@ body {
 .customer-logo {
     width: 50px; height: 50px; background-color: var(--text-color); color: var(--bg-color);
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 20px; font-weight: bold; flex-shrink: 0;
+    font-size: 20px; font-weight: bold; flex-shrink: 0; aspect-ratio: 1/1;
 }
 .customer-title-wrap h3 { font-size: 16px; margin-bottom: 3px; }
 .customer-badge {
@@ -256,7 +271,82 @@ body {
 .suggested-channel { font-size: 12px; color: var(--text-muted); }
 
 /* =========================================
-   7. ÖZEL OYNATICI (PLAYER) KONTROLLERİ VE EFEKTLER
+   7. İŞ ORTAKLARI SAYFASI (Kusursuz Yuvarlak Tasarım)
+========================================= */
+.customers-container {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.channel-card {
+    background: #0d0d0d;
+    border: 1px solid #222;
+    border-radius: 20px;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.channel-card:hover {
+    background: #151515;
+    border-color: #555;
+    transform: translateY(-5px);
+}
+
+/* Kusursuz Oval/Yuvarlak Logo */
+.channel-card .ch-logo {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(135deg, #ffffff, #cccccc);
+    color: #000000;
+    border-radius: 50%; /* Tam yuvarlak yapan kod */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    border: 3px solid #0d0d0d;
+    outline: 2px solid #333;
+    aspect-ratio: 1 / 1; /* Kesin orantı sağlar */
+}
+
+.channel-card h3 { color: #fff; font-size: 18px; font-weight: 700; margin-bottom: 10px; letter-spacing: 0.5px; }
+.channel-card p { color: #888; font-size: 13px; line-height: 1.6; }
+
+/* =========================================
+   8. KANAL SAYFASI (Markaya Özel)
+========================================= */
+.channel-header-section {
+    background: linear-gradient(to bottom, #111, #050505);
+    padding: 50px 20px 30px;
+    text-align: center;
+    border-bottom: 1px solid #1f1f1f;
+}
+
+.ch-logo-big {
+    width: 100px; height: 100px; margin: 0 auto 20px;
+    background: linear-gradient(135deg, #ffffff, #cccccc); color: #000;
+    border-radius: 50%; font-size: 40px; font-weight: bold;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.8); border: 4px solid #000; outline: 2px solid #333;
+    aspect-ratio: 1 / 1;
+}
+
+.ch-name { font-size: 28px; color: #fff; margin-bottom: 10px; }
+.ch-info { font-size: 14px; color: #888; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+
+/* =========================================
+   9. ÖZEL OYNATICI (PLAYER) KONTROLLERİ VE EFEKTLER
 ========================================= */
 .player-controls {
     position: absolute; bottom: 0; left: 0; right: 0;
@@ -281,7 +371,7 @@ body {
 .player-btn:hover { opacity: 1; }
 .time-display { color: #fff; font-size: 13px; font-weight: 500; }
 
-/* Hız Seçici (Eski q-option hatası giderildi) */
+/* Hız Seçici */
 .speed-selector { position: relative; }
 .speed-btn { font-size: 14px; font-weight: bold; }
 .speed-dropdown {
@@ -302,7 +392,7 @@ body {
 .skip-effect.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
 /* =========================================
-   8. MOBİL UYUMLULUK VE APP MENÜSÜ
+   10. MOBİL UYUMLULUK VE APP MENÜSÜ
 ========================================= */
 .mobile-bottom-nav {
     display: none; position: fixed; bottom: 0; left: 0; width: 100%;

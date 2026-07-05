@@ -132,3 +132,6 @@ function attachInteractiveFeatures() {
     }, { threshold: 0.6 });
 
     document.querySelectorAll('.preview-video').forEach(vid => observer.observe(vid));
+
+    // Sistemi Başlat
+document.addEventListener('DOMContentLoaded', renderCustomFeed);

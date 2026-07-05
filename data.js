@@ -80,3 +80,4 @@ const shortsData = [
     { id: 6, title: "Araba Reklamı", videoSrc: "videos/shorts/araba-reklam.mp4", customerName: "NOV Ajans", address: "Gebze / Kocaeli", phone: "0533 140 04 19" },
     { id: 7, title: "Parfüm Reklamı", videoSrc: "videos/shorts/parfum-reklam.mp4", customerName: "NOV Ajans", address: "Gebze / Kocaeli", phone: "0533 140 04 19" }
 ];
+

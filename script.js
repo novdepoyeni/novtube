@@ -81,8 +81,23 @@ function renderCustomFeed() {
                 ${createLongVideoCard(videosData[8])}
              </div>`;
 
-    // 6. En Alt Kısım: Başa Sarma (Döngü) Hedefi
-    html += `<div id="loop-trigger" style="height: 50px; display: flex; align-items: center; justify-content: center; color: #444; font-size: 12px; margin-bottom: 20px;">Döngü Yenileniyor...</div>`;
+    // 6. EKSİK OLAN KISIM EKLENDİ: Sosyal Medya Panosu (Hover Efektli)
+    html += `
+        <div style="padding: 40px 20px; text-align: center; border-top: 1px solid #1a1a1a; margin-top: 10px; background: #080808;">
+            <h3 style="color: #fff; font-size: 18px; margin-bottom: 10px;">NOV Medya Ajansı</h3>
+            <p style="color: #666; font-size: 12px; margin-bottom: 25px; letter-spacing: 2px;">BİZİ SOSYAL MEDYADA TAKİP EDİN</p>
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <a href="#" style="color: #fff; background: #111; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid #333; transition: 0.3s; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5);" onmouseover="this.style.background='#d62976'; this.style.transform='translateY(-5px)'; this.style.borderColor='#d62976'" onmouseout="this.style.background='#111'; this.style.transform='translateY(0)'; this.style.borderColor='#333'"><i class="fab fa-instagram"></i></a>
+                
+                <a href="#" style="color: #fff; background: #111; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid #333; transition: 0.3s; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5);" onmouseover="this.style.background='#ff0000'; this.style.transform='translateY(-5px)'; this.style.borderColor='#ff0000'" onmouseout="this.style.background='#111'; this.style.transform='translateY(0)'; this.style.borderColor='#333'"><i class="fab fa-youtube"></i></a>
+                
+                <a href="#" style="color: #fff; background: #111; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; border: 1px solid #333; transition: 0.3s; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5);" onmouseover="this.style.background='#1877f2'; this.style.transform='translateY(-5px)'; this.style.borderColor='#1877f2'" onmouseout="this.style.background='#111'; this.style.transform='translateY(0)'; this.style.borderColor='#333'"><i class="fab fa-facebook-f"></i></a>
+            </div>
+        </div>
+    `;
+
+    // 7. En Alt Kısım: Başa Sarma (Döngü) Hedefi
+    html += `<div id="loop-trigger" style="height: 60px; display: flex; align-items: center; justify-content: center; color: #444; font-size: 12px; margin-bottom: 20px;">Döngü Yenileniyor...</div>`;
 
     feedContainer.innerHTML = html;
 

@@ -44,3 +44,28 @@ const videosData = [
         }
     }
 ];
+
+// ==========================================
+// KISA VİDEOLAR (SHORTS) VERİTABANI
+// ==========================================
+// Bu videolar 'videos/shorts/' klasörünün içinden çekilir.
+const shortsData = [
+    {
+        id: 1,
+        title: "Görele Pide Fırından Çıkış Anı",
+        videoSrc: "videos/shorts/gorele_short1.mp4",
+        customerName: "Görele Pide"
+    },
+    {
+        id: 2,
+        title: "Marley Döner Zurna Hazırlığı",
+        videoSrc: "videos/shorts/marley_short1.mp4",
+        customerName: "Marley Döner"
+    },
+    {
+        id: 3,
+        title: "Hero's Pizza Peynir Şov",
+        videoSrc: "videos/shorts/heros_short1.mp4",
+        customerName: "Hero's Pizza"
+    }
+];

@@ -132,6 +132,18 @@ function attachInteractiveFeatures() {
     }, { threshold: 0.6 });
 
     document.querySelectorAll('.preview-video').forEach(vid => observer.observe(vid));
+    
+// 3. En Alta Gelince En Başa Kusursuz Kaydırma (Sonsuz Döngü)
+    const loopObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+            // Kullanıcı en alta indiğinde, home-feed alanını yumuşakça en başa kaydır
+            feedContainer.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }, { threshold: 0.1 });
+
+    const trigger = document.getElementById('loop-trigger');
+    if (trigger) loopObserver.observe(trigger);
+}
 
 // Sayfa yüklendiğinde akışı oluştur
 document.addEventListener('DOMContentLoaded', renderCustomFeed);

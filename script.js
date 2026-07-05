@@ -1,27 +1,52 @@
 // ==========================================
-// ANA SAYFA DİNAMİKLERİ (script.js)
-// Not: Veriler artık data.js dosyasından otomatik çekilmektedir.
+// ANA SAYFA DİNAMİKLERİ VE SEO (script.js)
 // ==========================================
 
 const videoGrid = document.getElementById('video-grid');
 
-// Ana Sayfaya Videoları Yükleme Fonksiyonu
+// 1. Google İçin Yapısal Veri (JSON-LD) Enjeksiyonu
+// Bu kod sayesinde Google görseller ve arama sonuçlarında videoların çıkacak
+function injectHomepageSEO() {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    
+    const itemList = videosData.map((video, index) => ({
+        "@type": "ListItem",
+        "position": index + 1,
+        "item": {
+            "@type": "VideoObject",
+            "name": video.title,
+            "description": video.description,
+            "contentUrl": `https://novtube.com/${video.videoSrc}`,
+            "uploadDate": video.date,
+            "publisher": { "@type": "Organization", "name": video.customer.name }
+        }
+    }));
+
+    const schemaData = {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": itemList
+    };
+
+    script.text = JSON.stringify(schemaData);
+    document.head.appendChild(script);
+}
+
+// 2. Videoları Yükle ve Akıllı Oynatıcıyı Kur
 function loadHomepageVideos() {
     if (!videoGrid) return;
-    
-    videoGrid.innerHTML = ''; // İçeriği temizle
+    videoGrid.innerHTML = ''; 
 
-    // "videosData" dizisi data.js dosyasından geliyor
     videosData.forEach(video => {
         const card = document.createElement('div');
         card.classList.add('video-card');
-        
-        // Kart İçeriği (Küçük resim yerine doğrudan video)
         card.innerHTML = `
             <div class="preview-container">
-                <video class="preview-video" src="${video.videoSrc}" muted loop playsinline></video>
+                <video class="preview-video" src="${video.videoSrc}" muted loop playsinline preload="metadata"></video>
                 <button class="unmute-btn"><i class="fas fa-volume-mute"></i></button>
-                <div class="click-overlay"></div> </div>
+                <div class="click-overlay"></div>
+            </div>
             <div class="video-info">
                 <div class="video-details">
                     <h3 class="video-title">${video.title}</h3>
@@ -32,54 +57,41 @@ function loadHomepageVideos() {
 
         const vidEl = card.querySelector('.preview-video');
         const unmuteBtn = card.querySelector('.unmute-btn');
-        const overlay = card.querySelector('.click-overlay');
-
-        // Tıklama ile izleme sayfasına yönlendirme
-        overlay.addEventListener('click', () => {
+        
+        card.querySelector('.click-overlay').addEventListener('click', () => {
             window.location.href = `video.html?id=${video.id}`;
         });
 
-        // Sesi Aç/Kapat Butonu İşlevi
         unmuteBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             vidEl.muted = !vidEl.muted;
             unmuteBtn.innerHTML = vidEl.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
         });
 
-        // Masaüstü: Fare üzerine gelince oynat, çıkınca durdur ve sesi kapat
-        card.addEventListener('mouseenter', () => vidEl.play());
-        card.addEventListener('mouseleave', () => {
-            vidEl.pause();
-            vidEl.muted = true; 
-            unmuteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-        });
-
         videoGrid.appendChild(card);
     });
 
-    // Mobil: Ekranın görünür alanına girince (scroll yaparken) otomatik oynat
+    // SADECE EKRANDAKİ VİDEOYU OYNATMA MANTIĞI (Akıllı Scroll)
+    // threshold: 0.7 demek, videonun en az %70'i ekrandaysa çalıştır demektir.
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const vid = entry.target.querySelector('.preview-video');
             if (entry.isIntersecting) {
-                vid.play();
+                // Video ekrana geldi, oynat
+                vid.play().catch(e => console.log("Otomatik oynatma engellendi:", e));
             } else {
+                // Video ekrandan çıktı, durdur ve sesi kapat
                 vid.pause();
+                vid.muted = true;
+                entry.target.querySelector('.unmute-btn').innerHTML = '<i class="fas fa-volume-mute"></i>';
             }
         });
-    }, { threshold: 0.5 }); // Videonun %50'si ekranda görünürse tetiklenir
+    }, { threshold: 0.7 }); 
 
     document.querySelectorAll('.video-card').forEach(card => observer.observe(card));
 }
 
-// Sol Menü (Hamburger) İşlevi (Masaüstü için)
-const menuToggle = document.getElementById('menu-toggle');
-const sidebar = document.querySelector('.sidebar');
-if (menuToggle && sidebar) {
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-    });
-}
-
-// Sayfa yüklendiğinde videoları ekrana bas
-document.addEventListener('DOMContentLoaded', loadHomepageVideos);
+document.addEventListener('DOMContentLoaded', () => {
+    loadHomepageVideos();
+    injectHomepageSEO(); // SEO verisini bas
+});

@@ -133,5 +133,5 @@ function attachInteractiveFeatures() {
 
     document.querySelectorAll('.preview-video').forEach(vid => observer.observe(vid));
 
-    // Sistemi Başlat
+// Sayfa yüklendiğinde akışı oluştur
 document.addEventListener('DOMContentLoaded', renderCustomFeed);

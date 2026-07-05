@@ -2,23 +2,27 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovTube | NOV Referanslar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NovTube | Premium Referans Portfolyosu</title>
+    <meta name="description" content="NOV Medya Ajansı'nın hazırladığı profesyonel tanıtım filmleri, kurumsal marka çalışmaları ve dijital medya referansları.">
+    
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <header class="navbar">
+    <header class="navbar" style="background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.05);">
         <div class="nav-left">
-            <i class="fas fa-bars menu-icon" id="menu-toggle"></i>
-            <a href="index.html" class="logo">Nov<span>Tube</span></a>
+            <a href="index.html" class="logo" style="text-shadow: 0 0 15px rgba(255,255,255,0.1); letter-spacing: -0.5px;">Nov<span style="color: #888;">Tube</span></a>
+        </div>
+        <div class="nav-right">
+            <a href="https://novedit.com.tr" target="_blank" style="text-decoration: none; color: #fff; border: 1px solid #333; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; transition: all 0.3s ease; background: linear-gradient(145deg, #1a1a1a, #0d0d0d); box-shadow: 0 4px 10px rgba(0,0,0,0.5);">NOV Ajans <i class="fas fa-external-link-alt" style="font-size: 10px; margin-left: 4px; color: #888;"></i></a>
         </div>
     </header>
 
     <main class="main-container">
         
-        <aside class="sidebar">
+        <aside class="sidebar" style="border-right: 1px solid rgba(255,255,255,0.05);">
             <a href="index.html" class="nav-link active">
                 <i class="fas fa-home"></i>
                 <span>Ana Sayfa</span>
@@ -33,8 +37,18 @@
             </a>
         </aside>
 
-        <section class="video-grid" id="video-grid">
-            </section>
+        <div style="flex: 1; display: flex; flex-direction: column; height: 100%; overflow: hidden; background-color: var(--bg-color);">
+            
+            <div style="padding: 15px 20px 5px; display: flex; gap: 10px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid rgba(255,255,255,0.02);">
+                <span style="background: #ffffff; color: #000000; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">Tümü</span>
+                <span style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.2s;">Tanıtım Filmleri</span>
+                <span style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.2s;">Reklam Çekimleri</span>
+                <span style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 6px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; white-space: nowrap; transition: 0.2s;">Animasyon</span>
+            </div>
+
+            <section class="video-grid" id="video-grid" style="padding-top: 15px; padding-bottom: 80px;">
+                </section>
+        </div>
 
     </main>
 
